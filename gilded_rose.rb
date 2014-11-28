@@ -2,8 +2,6 @@ require './item.rb'
 
 class GildedRose
 
-  @items = []
-
   def initialize
     @items = []
     @items << Item.new("+5 Dexterity Vest", 10, 20)
@@ -15,52 +13,54 @@ class GildedRose
   end
 
   def update_quality
+    @items.each do |item|
+      case item.name
+      when "Sulfuras, Hand of Ragnaros"
+        return
+      end
 
-    for i in 0..(@items.size-1)
-      if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-        if (@items[i].quality > 0)
-          if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-            @items[i].quality = @items[i].quality - 1
-          end
-        end
+      if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert")
+        decrease_quality(item)
       else
-        if (@items[i].quality < 50)
-          @items[i].quality = @items[i].quality + 1
-          if (@items[i].name == "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].sell_in < 11)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-            if (@items[i].sell_in < 6)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
+        increase_quality(item)
+
+        if (item.name == "Backstage passes to a TAFKAL80ETC concert")
+          if (item.sell_in < 11)
+            increase_quality(item)
+          end
+          if (item.sell_in < 6)
+            increase_quality(item)
           end
         end
       end
-      if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-        @items[i].sell_in = @items[i].sell_in - 1;
-      end
-      if (@items[i].sell_in < 0)
-        if (@items[i].name != "Aged Brie")
-          if (@items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].quality > 0)
-              if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-                @items[i].quality = @items[i].quality - 1
-              end
-            end
+
+      decrease_sell_in(item)
+
+      if (item.sell_in < 0)
+        if (item.name != "Aged Brie")
+          if (item.name != "Backstage passes to a TAFKAL80ETC concert")
+            decrease_quality(item)
           else
-            @items[i].quality = @items[i].quality - @items[i].quality
+            item.quality = 0
           end
         else
-          if (@items[i].quality < 50)
-            @items[i].quality = @items[i].quality + 1
-          end
+          increase_quality(item)
         end
       end
     end
   end
 
+  private
+
+  def decrease_sell_in(item)
+    item.sell_in -= 1
+  end
+
+  def increase_quality(item)
+    item.quality += 1 if item.quality < 50
+  end
+
+  def decrease_quality(item)
+    item.quality -= 1 if item.quality > 0
+  end
 end
