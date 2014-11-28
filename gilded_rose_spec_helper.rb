@@ -16,6 +16,8 @@ class GildedRose
     else
       @items << object
     end
+
+    extend_items
   end
 
 end
