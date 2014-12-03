@@ -1,4 +1,5 @@
 require './item.rb'
+require './update.rb'
 
 class GildedRose
 
@@ -14,38 +15,7 @@ class GildedRose
 
   def update_quality
     @items.each do |item|
-      return if item.name == "Sulfuras, Hand of Ragnaros"
-
-      decrease_sell_in(item)
-
-      case item.name
-      when "Aged Brie"
-        increase_quality(item)
-        increase_quality(item) if item.sell_in < 0
-      when "Backstage passes to a TAFKAL80ETC concert"
-        increase_quality(item)
-        increase_quality(item) if item.sell_in < 10
-        increase_quality(item) if item.sell_in < 5
-
-        item.quality = 0       if item.sell_in < 0
-      else
-        decrease_quality(item)
-        decrease_quality(item) if item.sell_in < 0
-      end
+      Updater.new.update(item)
     end
-  end
-
-  private
-
-  def decrease_sell_in(item)
-    item.sell_in -= 1
-  end
-
-  def increase_quality(item)
-    item.quality += 1 if item.quality < 50
-  end
-
-  def decrease_quality(item)
-    item.quality -= 1 if item.quality > 0
   end
 end
