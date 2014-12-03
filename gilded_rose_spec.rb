@@ -204,4 +204,42 @@ describe GildedRose do
       end
     end
   end
+
+  describe "for Conjured Items" do
+    describe "within sell in date" do
+      before do
+        @item = Item.new("Conjured Mana Cake", 10, 6)
+        @gildedrose = GildedRose.new(@item)
+        @gildedrose.update_quality
+      end
+
+      it "should decrease twice as fast before sign in" do
+        expect(@item.quality).to equal(4)
+      end
+    end
+
+    describe "expired" do
+      before do
+        @item = Item.new("Conjured Mana Cake", 0, 6)
+        @gildedrose = GildedRose.new(@item)
+        @gildedrose.update_quality
+      end
+
+      it "should decrease twice as fast before sign in" do
+        expect(@item.quality).to equal(2)
+      end
+    end
+
+    describe "at the quality limit" do
+      before do
+        @item = Item.new("Conjured Mana Cake", 10, 1)
+        @gildedrose = GildedRose.new(@item)
+        @gildedrose.update_quality
+      end
+
+      it "should not exceed 0" do
+        expect(@item.quality).to equal(0)
+      end
+    end
+  end
 end

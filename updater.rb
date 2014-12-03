@@ -53,3 +53,12 @@ module TicketsUpdate
     self.quality = 0 if self.sell_in < 0
   end
 end
+
+module ConjuredUpdate
+  include Update
+
+  def increment
+    self.quality += -1 if self.quality != 0
+    self.quality += -1 if self.quality != 0
+  end
+end

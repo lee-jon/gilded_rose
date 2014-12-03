@@ -4,7 +4,8 @@ require './updater.rb'
 class GildedRose
   UPDATERS = { "Aged Brie" => ImprovingUpdate,
                "Sulfuras, Hand of Ragnaros" => LegendaryUpdate,
-               "Backstage passes to a TAFKAL80ETC concert" => TicketsUpdate }
+               "Backstage passes to a TAFKAL80ETC concert" => TicketsUpdate,
+               "Conjured Mana Cake" => ConjuredUpdate }
 
   def initialize
     @items = []
